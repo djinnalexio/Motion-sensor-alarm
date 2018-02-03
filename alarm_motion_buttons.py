@@ -9,7 +9,12 @@ import time ; import datetime
 import os
 GPIO.setmode(GPIO.BCM)
 
+<<<<<<< HEAD
 GPIO.setup(21,GPIO.OUT) # setting the pins for lights as outputs
+=======
+all = (21, 23, 16, 12, 25, 24) #all lights
+GPIO.setup(all,GPIO.OUT) # setting the pins for lights as outputs
+>>>>>>> d4f6827386eb9d65b40691616546ecee74eabc92
 
 GPIO.setup(20, GPIO.IN, pull_up_down = GPIO.PUD_UP)  # setting the pins for switches as inputs with pull up resistors
 GPIO.setup(27, GPIO.IN, pull_up_down = GPIO.PUD_UP)
