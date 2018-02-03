@@ -1,5 +1,7 @@
 #!/usr/bin/python
-#By Philippe Akue
+
+"By Philippe Akue"
+
 #code tested on both python 2 and python 3
 import RPi.GPIO as GPIO
 import pygame
@@ -7,8 +9,7 @@ import time ; import datetime
 import os
 GPIO.setmode(GPIO.BCM)
 
-all = (21, 13, 16, 12, 25, 24) #all lights
-GPIO.setup(all,GPIO.OUT) # setting the pins for lights as outputs
+GPIO.setup(21,GPIO.OUT) # setting the pins for lights as outputs
 
 GPIO.setup(18, GPIO.IN, pull_up_down = GPIO.PUD_DOWN) # setting up the PIR motion sensor as input with pull down resistor
 
@@ -20,14 +21,14 @@ def countdown(t): # function for countdown before arming the alarm
     while t>=0:
         print (t)
         t -= 1 # means t = t - 1
-        GPIO.output(all,GPIO.HIGH)
+        GPIO.output(21,GPIO.HIGH)
         time.sleep(0.2)
-        GPIO.output(all,GPIO.LOW)
+        GPIO.output(21,GPIO.LOW)
         time.sleep(0.8)
     
 try:
     os.system('clear') #from the command line, use the command 'clear'
-    GPIO.output(all,GPIO.LOW)
+    GPIO.output(21,GPIO.LOW)
     print ("***Raspberry Pi Passive Infrared Alarm***\n")
     while 1:
         print ("    To set the alarm, press Enter")
@@ -36,14 +37,14 @@ try:
         countdown(10)
         print ("Motion sensor enabled")
         GPIO.wait_for_edge(18,GPIO.RISING) #wait for a signal from the PIR motion sensor to keep going
-        GPIO.output(all,GPIO.HIGH) #turn on all lights
+        GPIO.output(21,GPIO.HIGH) #turn on light
         alarm.play(loops =-1) #plays the sound file in an endless loop
         #.play() plays sound files in the background of the code.
         triggered_time = datetime.datetime.now() #register the time alarm was trigerred
         print ("!!!INTRUDER DETECTED!!!\n!!!Alarm Triggered!!!\n")
         print ("To disable the alarm, press Enter")
         input()
-        GPIO.output(all,GPIO.LOW) #turn off all lights
+        GPIO.output(21,GPIO.LOW) #turn off light
         alarm.stop()# stop playback
         print ("Alarm disabled\n\n")
         print ("Alarm trigerred at " + str(triggered_time.strftime("%Y/%m/%d %H:%M:%S")) + "\n") # gives trigerred time with a format
@@ -53,6 +54,6 @@ try:
         os.system('clear')
 
 except KeyboardInterrupt: # exit if Ctrl+C
-    GPIO.output(all,GPIO.LOW)
+    GPIO.output(21,GPIO.LOW)
     GPIO.cleanup() # clean pins
     print ("\n***bye***\n")
