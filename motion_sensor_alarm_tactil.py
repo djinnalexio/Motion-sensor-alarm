@@ -29,11 +29,10 @@ pygame.mixer.init() #initializing pygame.mixer
 alarm = pygame.mixer.Sound("Documents/alarm.wav") #creating the sound object for the alarm
 #In python 3, you need to replace 'Documents/alarm.wav' by the full path of the file 'alarm.wav'
 
-
 def countdown(t): # function for countdown before arming the alarm
     print ("\n***Alarm engaged in 10 seconds***\n")
-	while t>0:
-	    print ("\t\t%i\n") % t
+    while t>0:
+	print ("\t\t%i\n") % t
         t -= 1 #means t = t -1 ; each time the section repeats, substracts 1 from t
         GPIO.output(leds,GPIO.HIGH)
         time.sleep(0.1)
@@ -55,14 +54,18 @@ try:
         #.play() plays sound files in the background of the code.
         triggered_time = datetime.datetime.now() #register the time alarm was trigerred
         print ("!!!INTRUDER DETECTED!!!\n!!!Alarm Triggered!!!\n")
-        print ("To disable the alarm, press Key 2")
+        print ("To disable the alarm, press Key B")
         GPIO.wait_for_edge(keyB, GPIO.FALLING) #wait for the signal from Key 2 (pin 27) to keep going
         GPIO.output(leds,GPIO.LOW) #turn off lights
         alarm.stop()# stop playback
         print ("Alarm disabled\n\n")
-        print ("Alarm trigerred at " + str(triggered_time.strftime("%Y/%m/%d %H:%M:%S")) + "\n") # gives trigerred time with a format
+        record = "Alarm trigerred at " + str(triggered_time.strftime("%Y/%m/%d %H:%M:%S")) + "\n" # gives trigerred time with a format
+        print record
+        alarm_log = open("alarm_log.txt", "a+") #opens (creates if not present) the alarm log
+        alarm_log.write("\n\n" + record) #add the occurence to the log
+        alarm_log.close()
         print ("To continue, press Key 2")
-        print ("To exit, press Ctrl+C, then press Key 2")
+        print ("To exit, press Ctrl+C, then press Key B")
         GPIO.wait_for_edge(keyB, GPIO.FALLING)
         os.system('clear')
 

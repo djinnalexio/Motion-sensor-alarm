@@ -29,18 +29,17 @@ pygame.mixer.init() #initializing pygame.mixer
 alarm = pygame.mixer.Sound("Documents/alarm.wav") #creating the sound object for the alarm
 #In python 3, you need to replace 'Documents/alarm.wav' by the full path of the file 'alarm.wav'
 
-
 def countdown(): # function for countdown before arming the alarm
-	t = int(raw_input("    To set the alarm, enter countdown value\n\t\t>"))
-	print ("\n\nAlarm set in %s seconds") % t
-	while t > 0:
-		print (t)
-		t -= 1
-		GPIO.output(leds,GPIO.HIGH)
-		time.sleep(0.1)
-		GPIO.output(leds,GPIO.LOW)
-		time.sleep(0.9)
-		
+    t = int(raw_input("    To set the alarm, enter countdown value\n\t\t>"))
+    print ("\n\n\t\t***Alarm set in %s seconds***") % t
+    while t > 0:
+        print ("\t\t%i\n") % t
+        t -= 1 #means t = t -1 ; each time the section repeats, substracts 1 from t
+        GPIO.output(leds,GPIO.HIGH)
+        time.sleep(0.1)
+        GPIO.output(leds,GPIO.LOW)
+        time.sleep(0.9)
+
 try:
     os.system('clear') #from the command line, use the command 'clear'
     GPIO.output(leds,GPIO.LOW)
@@ -54,15 +53,17 @@ try:
         #.play() plays sound files in the background of the code.
         triggered_time = datetime.datetime.now() #register the time alarm was trigerred
         print ("!!!INTRUDER DETECTED!!!\n!!!Alarm Triggered!!!\n")
-        print ("To disable the alarm, press Enter")
-        input()
+        raw_input ("To disable the alarm, press Enter")
         GPIO.output(leds,GPIO.LOW) #turn off lights
         alarm.stop()# stop playback
         print ("Alarm disabled\n\n")
-        print ("Alarm trigerred at " + str(triggered_time.strftime("%Y/%m/%d %H:%M:%S")) + "\n") # gives trigerred time with a format
+        record = "Alarm trigerred at " + str(triggered_time.strftime("%Y/%m/%d %H:%M:%S")) + "\n" # gives trigerred time with a format
+        print record
+        alarm_log = open("alarm_log.txt", "a+") #opens (creates if not present) the alarm log
+        alarm_log.write("\n\n" + record) #add the occurence to the log
+        alarm_log.close()
         print ("To continue, press Enter")
-        print ("To exit, press Ctrl+C")
-        input()
+        raw_input ("To exit, press Ctrl+C")
         os.system('clear')
 
 except KeyboardInterrupt: # exit if Ctrl+C
