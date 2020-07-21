@@ -1,2 +1,2 @@
 # Motion-sensor-alarm
-A simple alarm with a PIR motion sensor and with or without push buttons
+A simple alarm with a PIR motion sensor with and without push buttons
